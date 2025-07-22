@@ -58,7 +58,7 @@
 // export default Product;
 
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 type ProductItem = {
   name: string;

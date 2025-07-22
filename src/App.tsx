@@ -44,8 +44,8 @@
 
 
 
-import React, { useState } from 'react';
-import Product from './product';
+import { useState } from 'react';
+import Product from './Product';
 import About from './About';
 import Contact from './Contact ';
 import './App.css';
@@ -55,7 +55,7 @@ function App() {
   const [page, setPage] = useState('home');
   const [filter, setFilter] = useState('Electronics'); 
 
-  const hey = (category) => {
+  const hey = (category: string) => {
     setFilter(category);
     setPage('products');
   };
