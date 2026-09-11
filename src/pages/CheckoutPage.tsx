@@ -38,13 +38,15 @@ export default function CheckoutPage() {
   const advanceAmount = Math.round(totalAmount * (SITE.advancePercent / 100))
   const balanceAmount = totalAmount - advanceAmount
 
-  async function submitOrderToBackend(order: Order) {
+  async function submitOrderToBackend(order: Order, paymentVerificationToken: string, razorpayOrderId: string) {
     await apiFetch('/orders', {
       method: 'POST',
       body: JSON.stringify({
         ...order,
         orderId: order.id,
         items: order.items,
+        paymentVerificationToken,
+        razorpayOrderId,
       }),
     })
   }
@@ -68,7 +70,7 @@ export default function CheckoutPage() {
       customerEmail: email.trim(),
       customerPhone: phone.trim(),
       description: `${SITE.advancePercent}% advance — ${orderedCarpet.name}`,
-      onSuccess: async (paymentId) => {
+      onSuccess: async ({ paymentId, razorpayOrderId, signature }) => {
         const order: Order = {
           id: orderId,
           items: [{
@@ -93,7 +95,21 @@ export default function CheckoutPage() {
         }
 
         try {
-          await submitOrderToBackend(order)
+          const verification = await apiFetch<{ verified: boolean; verificationToken: string }>('/payments/verify', {
+            method: 'POST',
+            body: JSON.stringify({
+              razorpayOrderId,
+              razorpayPaymentId: paymentId,
+              razorpaySignature: signature,
+              expectedAmount: advanceAmount,
+            }),
+          })
+
+          if (!verification.verified) {
+            throw new Error('Payment verification failed.')
+          }
+
+          await submitOrderToBackend(order, verification.verificationToken, razorpayOrderId)
         } catch (err) {
           setError(err instanceof Error ? err.message : 'Unable to submit order. Please try again.')
           return

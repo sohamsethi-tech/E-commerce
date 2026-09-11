@@ -8,9 +8,8 @@ export const SITE = {
 } as const
 
 export const RAZORPAY = {
-  /** Set to false and add your key when ready */
-  dummyMode: true,
-  keyId: 'rzp_test_DUMMY_KEY',
+  dummyMode: import.meta.env.VITE_RAZORPAY_DUMMY_MODE !== 'false',
+  keyId: import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_test_DUMMY_KEY',
   merchantName: 'Carpets & Beyond by Dinesh Sethi',
 } as const
 

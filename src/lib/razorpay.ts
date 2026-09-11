@@ -1,4 +1,5 @@
 import { RAZORPAY, SITE } from '../config/site'
+import { apiFetch } from './api'
 
 export interface PaymentOptions {
   amount: number
@@ -7,7 +8,7 @@ export interface PaymentOptions {
   customerEmail: string
   customerPhone: string
   description: string
-  onSuccess: (paymentId: string) => void
+  onSuccess: (payment: { paymentId: string; razorpayOrderId: string; signature: string }) => void
   onFailure: (message: string) => void
 }
 
@@ -42,6 +43,11 @@ export async function initiatePayment(
   }
 
   try {
+    const paymentOrder = await apiFetch<{ orderId: string }>('/payments/create-order', {
+      method: 'POST',
+      body: JSON.stringify({ amount: options.amount, receipt: options.orderId }),
+    })
+
     await loadRazorpayScript()
     if (!window.Razorpay) throw new Error('Razorpay unavailable')
 
@@ -51,15 +57,19 @@ export async function initiatePayment(
       currency: 'INR',
       name: RAZORPAY.merchantName,
       description: options.description,
-      order_id: options.orderId,
+      order_id: paymentOrder.orderId,
       prefill: {
         name: options.customerName,
         email: options.customerEmail,
         contact: options.customerPhone,
       },
       theme: { color: '#1a2744' },
-      handler: (response: { razorpay_payment_id: string }) => {
-        options.onSuccess(response.razorpay_payment_id)
+      handler: (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
+        options.onSuccess({
+          paymentId: response.razorpay_payment_id,
+          razorpayOrderId: response.razorpay_order_id,
+          signature: response.razorpay_signature,
+        })
       },
       modal: {
         ondismiss: () => options.onFailure('Payment cancelled'),

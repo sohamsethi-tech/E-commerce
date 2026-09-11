@@ -1,4 +1,5 @@
 const express = require('express')
+const crypto = require('crypto')
 const Order = require('../models/Order')
 const { sendBusinessEmail } = require('../utils/email')
 
@@ -11,14 +12,23 @@ router.get('/', (req, res) => {
 
 router.post('/', async (req, res) => {
   try {
-    const { orderId, customerName, customerEmail, customerPhone, shippingAddress, notes, items, totalAmount, advanceAmount, advancePaid, paymentId, status } = req.body
+    const { orderId, customerName, customerEmail, customerPhone, shippingAddress, notes, items, totalAmount, advanceAmount, advancePaid, paymentId, paymentVerificationToken, status } = req.body
 
     if (!orderId || !customerName || !customerEmail || !customerPhone || !shippingAddress || !items?.length) {
       return res.status(400).json({ message: 'Order information is incomplete.' })
     }
 
-    if (!paymentId || !advancePaid) {
+    if (!paymentId || !advancePaid || !paymentVerificationToken || !process.env.RAZORPAY_KEY_SECRET) {
       return res.status(400).json({ message: 'Payment must be completed before the order can be created.' })
+    }
+
+    const expectedVerificationToken = crypto
+      .createHmac('sha256', process.env.RAZORPAY_KEY_SECRET)
+      .update(`${req.body.razorpayOrderId}|${paymentId}|${advanceAmount}`)
+      .digest('hex')
+
+    if (paymentVerificationToken !== expectedVerificationToken) {
+      return res.status(400).json({ message: 'Payment verification is required before the order can be created.' })
     }
 
     if (req.app.locals.mongoReady) {

@@ -73,6 +73,7 @@ app.get('/api/health', (req, res) => {
 
 app.use('/api/enquiries', require('./routes/enquiries'))
 app.use('/api/orders', require('./routes/orders'))
+app.use('/api/payments', require('./routes/payments'))
 app.use('/api/admin', (req, res, next) => {
   const adminToken = process.env.ADMIN_TOKEN
 

@@ -22,7 +22,11 @@ export default function DummyRazorpayModal({ options, onClose }: Props) {
     setTimeout(() => {
       setStep('done')
       setTimeout(() => {
-        options.onSuccess(`pay_dummy_${Date.now()}`)
+        options.onSuccess({
+          paymentId: `pay_dummy_${Date.now()}`,
+          razorpayOrderId: options.orderId,
+          signature: '',
+        })
         onClose()
       }, 1200)
     }, 1800)
