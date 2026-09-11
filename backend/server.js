@@ -14,6 +14,10 @@ const allowedOrigins = (process.env.FRONTEND_URL || 'http://localhost:5173,http:
   .map((origin) => origin.trim())
   .filter(Boolean)
 
+if (process.env.VERCEL_URL) {
+  allowedOrigins.push(`https://${process.env.VERCEL_URL}`)
+}
+
 app.use(cors({
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
@@ -69,6 +73,8 @@ function bootstrap() {
   verifyEmailTransport()
 }
 
-bootstrap()
+if (require.main === module) {
+  bootstrap()
+}
 
 module.exports = app
