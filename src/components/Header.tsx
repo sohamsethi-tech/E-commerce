@@ -39,7 +39,7 @@ export default function Header() {
   return (
     <header className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-500 ${surfaceClass}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link to="/" className="group">
+        <Link to="/" className="group shrink-0 whitespace-nowrap">
           <span className={`font-serif text-3xl tracking-wide transition-colors group-hover:text-gold ${brandTextClass}`}>
             Carpets &amp; Beyond
           </span>
@@ -48,13 +48,13 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-8 lg:flex">
+        <nav className="hidden items-center gap-5 xl:flex">
           {navLinks.map((link) => (
             <NavLink
               key={link.to}
               to={link.to}
               className={({ isActive }) =>
-                `text-sm tracking-[0.18em] uppercase transition-colors hover:text-gold ${isActive ? 'text-gold' : textClass}`
+                `whitespace-nowrap text-xs tracking-[0.18em] uppercase transition-colors hover:text-gold ${isActive ? 'text-gold' : textClass}`
               }
             >
               {link.label}
@@ -79,7 +79,7 @@ export default function Header() {
           </a>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className={`p-2 lg:hidden ${isHome && !scrolled ? 'text-white' : 'text-charcoal'}`}
+            className={`p-2 xl:hidden ${isHome && !scrolled ? 'text-white' : 'text-charcoal'}`}
             aria-label="Toggle menu"
           >
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
