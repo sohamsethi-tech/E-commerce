@@ -4,9 +4,9 @@ import { formatINR, RAZORPAY } from '../config/site'
 import type { PaymentOptions } from '../lib/razorpay'
 
 // Dummy checkout ke liye contact details — real UPI ID mil jaaye to "pa=" replace kar dena
-const MERCHANT_PHONE = '+91 98968 17490'
-const MERCHANT_EMAIL = 'sohamsethi515@gmail.com'
-const UPI_INTENT = `upi://pay?pa=9896817490@upi&pn=${encodeURIComponent('Soham Sethi')}&cu=INR`
+const MERCHANT_PHONE = '+91 9729177599'
+const MERCHANT_EMAIL = 'carpetsandbeyond2018@gmail.com'
+const UPI_INTENT = `upi://pay?pa=9729177599@upi&pn=${encodeURIComponent('Soham Sethi')}&cu=INR`
 const QR_CODE_URL = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=8&data=${encodeURIComponent(UPI_INTENT)}`
 
 interface Props {

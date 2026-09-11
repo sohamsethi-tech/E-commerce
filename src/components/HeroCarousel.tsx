@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import CursorDrivenParticleTypography from './CursorDrivenParticleTypography'
 import { getFeaturedCarpets } from '../data/carpets'
 
 export default function HeroCarousel() {
@@ -39,12 +40,28 @@ export default function HeroCarousel() {
 
       <div className="relative z-10 flex h-full items-center">
         <div className="mx-auto w-full max-w-7xl px-6 lg:px-8">
-          <div className="max-w-xl animate-slide-up">
-            <p className="mb-4 text-xs tracking-[0.3em] text-gold uppercase">Fine Handmade Carpets</p>
-            <h1 className="font-serif text-5xl leading-tight text-white md:text-6xl lg:text-7xl">
+          <div className="max-w-[1200px] animate-slide-up">
+            <p className="mb-4 text-xs tracking-[0.3em] text-gold uppercase">Luxury handmade rugs • bespoke interiors</p>
+            <div className="min-h-[120px] w-full">
+              <CursorDrivenParticleTypography
+                text="Carpets & Beyond"
+                fontSize={74}
+                particleDensity={5}
+                dispersionStrength={20}
+                className="justify-start text-left"
+                color="#f8f2e6"
+              />
+            </div>
+            <p
+              className="mt-2 text-xs tracking-[0.28em] text-gold uppercase opacity-0 animate-fade-in"
+              style={{ animationDelay: '6s' }}
+            >
+              by Dinesh Sethi
+            </p>
+            <p className="mt-5 text-lg font-medium tracking-[0.12em] text-gold uppercase">
               {slide.name}
-            </h1>
-            <p className="mt-6 text-lg leading-relaxed text-white/80">{slide.description}</p>
+            </p>
+            <p className="mt-6 max-w-lg text-lg leading-relaxed text-white/80">{slide.description}</p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link
                 to={`/carpets/${slide.slug}`}

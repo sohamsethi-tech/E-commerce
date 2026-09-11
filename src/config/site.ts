@@ -1,9 +1,9 @@
 export const SITE = {
-  name: 'Heritage Loom',
-  email: 'sohamsethi515@gmail.com',
-  phone: '+91 9896817490',
-  phoneTel: '+919896817490',
-  address: 'Bhadohi, Varanasi, Uttar Pradesh, India',
+  name: 'Carpets & Beyond by Dinesh Sethi',
+  email: 'carpetsandbeyond2018@gmail.com',
+  phone: '+91 9729177599',
+  phoneTel: '+919729177599',
+  address: 'Panipat, Haryana, India',
   advancePercent: 50,
 } as const
 
@@ -11,7 +11,7 @@ export const RAZORPAY = {
   /** Set to false and add your key when ready */
   dummyMode: true,
   keyId: 'rzp_test_DUMMY_KEY',
-  merchantName: 'Heritage Loom',
+  merchantName: 'Carpets & Beyond by Dinesh Sethi',
 } as const
 
 export function formatINR(amount: number): string {

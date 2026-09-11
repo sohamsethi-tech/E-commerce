@@ -6,6 +6,7 @@ import { getCarpetBySlug } from '../data/carpets'
 import { SITE, formatINR } from '../config/site'
 import { generateOrderId, saveOrder } from '../lib/orders'
 import { initiatePayment, getPaymentLabel, getAdvanceNote } from '../lib/razorpay'
+import { apiFetch } from '../lib/api'
 import type { PaymentOptions } from '../lib/razorpay'
 import type { Order } from '../types'
 
@@ -37,6 +38,17 @@ export default function CheckoutPage() {
   const advanceAmount = Math.round(totalAmount * (SITE.advancePercent / 100))
   const balanceAmount = totalAmount - advanceAmount
 
+  async function submitOrderToBackend(order: Order) {
+    await apiFetch('/orders', {
+      method: 'POST',
+      body: JSON.stringify({
+        ...order,
+        orderId: order.id,
+        items: order.items,
+      }),
+    })
+  }
+
   function handlePlaceOrder(e: FormEvent) {
     e.preventDefault()
     setError('')
@@ -56,7 +68,7 @@ export default function CheckoutPage() {
       customerEmail: email.trim(),
       customerPhone: phone.trim(),
       description: `${SITE.advancePercent}% advance — ${orderedCarpet.name}`,
-      onSuccess: (paymentId) => {
+      onSuccess: async (paymentId) => {
         const order: Order = {
           id: orderId,
           items: [{
@@ -79,6 +91,14 @@ export default function CheckoutPage() {
           status: 'confirmed',
           createdAt: new Date().toISOString(),
         }
+
+        try {
+          await submitOrderToBackend(order)
+        } catch (err) {
+          setError(err instanceof Error ? err.message : 'Unable to submit order. Please try again.')
+          return
+        }
+
         saveOrder(order)
         navigate(`/order-confirmation/${orderId}`)
       },

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Carpets & Beyond favicon">
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#1f2d3d"/>
+      <stop offset="100%" stop-color="#c7a76a"/>
+    </linearGradient>
+  </defs>
+  <rect width="128" height="128" rx="18" fill="url(#bg)"/>
+  <path d="M20 90c8-22 22-34 40-34 18 0 32 12 40 34" fill="none" stroke="#f7f1e7" stroke-width="8" stroke-linecap="round"/>
+  <path d="M34 80h60M28 98h72" stroke="#f7f1e7" stroke-width="6" stroke-linecap="round" opacity="0.9"/>
+  <path d="M52 52l10-18 10 18" fill="none" stroke="#d4b06c" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

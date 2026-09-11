@@ -127,7 +127,7 @@ export default function ProductPage() {
                 <Mail size={16} /> Enquire Now
               </Link>
               <a
-                href="tel:+911234567890"
+                href="tel:+919729177599"
                 className="inline-flex items-center gap-2 border border-navy px-8 py-3.5 text-sm tracking-widest text-navy uppercase transition-colors hover:bg-navy hover:text-white"
               >
                 <Phone size={16} /> Call Us

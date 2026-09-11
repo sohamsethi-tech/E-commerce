@@ -13,10 +13,10 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h3 className="font-serif text-2xl text-gold">Heritage Loom</h3>
+            <h3 className="font-serif text-2xl text-gold">Carpets &amp; Beyond</h3>
+            <p className="mt-2 text-xs tracking-[0.22em] text-gold uppercase">by Dinesh Sethi</p>
             <p className="mt-4 text-sm leading-relaxed text-white/60">
-              Fine handcrafted carpets since 1881. An exclusive collection designed to stir emotion,
-              brought to life unlike any other.
+              Luxury handmade carpets, hospitality flooring, and bespoke rug artistry designed for grand spaces and unforgettable interiors.
             </p>
             <div className="mt-6 flex gap-4">
               {socialLinks.map((link) => (
@@ -73,7 +73,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 border-t border-white/10 pt-8 text-center text-xs text-white/40">
-          © {new Date().getFullYear()} Heritage Loom. All rights reserved. Crafted with care in Bhadohi, India.
+          © {new Date().getFullYear()} Carpets & Beyond. All rights reserved. Crafted with care in Panipat, Haryana, India.
         </div>
       </div>
     </footer>
