@@ -36,6 +36,31 @@ app.locals.store = {
 }
 
 app.locals.mongoReady = false
+let servicesPromise
+
+function initializeServices() {
+  if (!servicesPromise) {
+    servicesPromise = connectDB().then((mongoReady) => {
+      app.locals.mongoReady = mongoReady
+      if (!mongoReady) {
+        console.log('MongoDB not configured. Using in-memory data store for local development.')
+      }
+      verifyEmailTransport()
+    })
+  }
+
+  return servicesPromise
+}
+
+app.use(async (req, res, next) => {
+  try {
+    await initializeServices()
+    next()
+  } catch (error) {
+    console.error('Service initialization failed:', error)
+    res.status(503).json({ message: 'Backend services are temporarily unavailable.' })
+  }
+})
 
 app.get('/api/health', (req, res) => {
   res.json({

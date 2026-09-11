@@ -17,6 +17,30 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ message: 'Order information is incomplete.' })
     }
 
+    if (!paymentId || !advancePaid) {
+      return res.status(400).json({ message: 'Payment must be completed before the order can be created.' })
+    }
+
+    if (req.app.locals.mongoReady) {
+      const existingOrder = await Order.findOne({ orderId }).lean()
+      if (existingOrder) {
+        return res.status(200).json({
+          message: 'Order already recorded.',
+          order: existingOrder,
+          duplicate: true,
+        })
+      }
+    } else {
+      const existingOrder = req.app.locals.store.orders.find((order) => order.orderId === orderId)
+      if (existingOrder) {
+        return res.status(200).json({
+          message: 'Order already recorded.',
+          order: existingOrder,
+          duplicate: true,
+        })
+      }
+    }
+
     const payload = {
       orderId,
       customerName,

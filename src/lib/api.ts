@@ -15,7 +15,7 @@ export async function apiFetch<T>(endpoint: string, options: RequestInit = {}): 
   const data = contentType.includes('application/json') ? await response.json() : null
 
   if (!response.ok) {
-    throw new Error(data?.message || 'Request failed')
+    throw new Error(data?.message || `Request failed (${response.status})`)
   }
 
   return data as T
