@@ -25,6 +25,10 @@
     background-image: radial-gradient(circle at top, rgba(196, 162, 101, 0.12), transparent 30%), linear-gradient(180deg, #f8f5f0 0%, #f2ede5 100%);
   }
 
+  [id] {
+    scroll-margin-top: var(--navbar-height, 0px);
+  }
+
   a {
     text-decoration: none;
   }
@@ -40,6 +44,10 @@
 }
 
 @layer components {
+  .site-main {
+    padding-top: var(--navbar-height, 0px);
+  }
+
   .luxury-panel {
     @apply rounded-[28px] border border-gold/20 bg-white/80 shadow-[0_18px_50px_rgba(26,39,68,0.08)] backdrop-blur-sm;
   }

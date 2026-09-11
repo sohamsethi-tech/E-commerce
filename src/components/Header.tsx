@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Menu, X, Search, Phone } from 'lucide-react'
 
@@ -13,6 +13,7 @@ const navLinks = [
 ]
 
 export default function Header() {
+  const headerRef = useRef<HTMLElement>(null)
   const [menuOpen, setMenuOpen] = useState(false)
   const [searchOpen, setSearchOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState('')
@@ -27,6 +28,24 @@ export default function Header() {
     return () => window.removeEventListener('scroll', onScroll)
   }, [])
 
+  useEffect(() => {
+    const header = headerRef.current
+    if (!header) return
+
+    const updateHeaderHeight = () => {
+      document.documentElement.style.setProperty('--navbar-height', `${header.getBoundingClientRect().height}px`)
+    }
+
+    updateHeaderHeight()
+    const resizeObserver = new ResizeObserver(updateHeaderHeight)
+    resizeObserver.observe(header)
+
+    return () => {
+      resizeObserver.disconnect()
+      document.documentElement.style.removeProperty('--navbar-height')
+    }
+  }, [])
+
   const surfaceClass =
     isHome && !scrolled
       ? 'border-transparent bg-transparent'
@@ -37,7 +56,7 @@ export default function Header() {
   const iconClass = isHome && !scrolled ? 'text-white/80 hover:text-gold' : 'text-charcoal/70 hover:text-gold'
 
   return (
-    <header className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-500 ${surfaceClass}`}>
+    <header ref={headerRef} className={`fixed inset-x-0 top-0 z-50 border-b transition-all duration-500 ${surfaceClass}`}>
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <Link to="/" className="group shrink-0 whitespace-nowrap">
           <span className={`font-serif text-3xl tracking-wide transition-colors group-hover:text-gold ${brandTextClass}`}>
